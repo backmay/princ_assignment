@@ -1,35 +1,16 @@
-from dagster import job, op, repository, schedule, get_dagster_logger, DefaultScheduleStatus
-import requests
+from dagster import repository
 
-
-@op
-def test_op():
-    logger = get_dagster_logger()
-    r = requests.get('https://tradestie.com/api/v1/apps/reddit')
-    logger.info(r.json())
-    logger.info('===== V2 =====')
-
-
-@job
-def test_job():
-    test_op()
-
-
-@schedule(
-    cron_schedule="30 0 * * *",
-    job=test_job,
-    execution_timezone="Asia/Bangkok",
-    default_status=DefaultScheduleStatus.RUNNING
-)
-def test_scheduler():
-    return {
-        "ops": {
-        }
-    }
+from scenario1 import scenario1_job, scenario1_scheduler
+from scenario2 import scenario2_job, scenario2_scheduler
+from scenario3 import scenario3_job, scenario3_scheduler
+from scenario4 import scenario4_job, scenario4_scheduler
 
 
 @repository
 def test_repo():
     return [
-        test_job, test_scheduler,
+        scenario1_job, scenario1_scheduler,
+        scenario2_job, scenario2_scheduler,
+        scenario3_job, scenario3_scheduler,
+        scenario4_job, scenario4_scheduler,
     ]
