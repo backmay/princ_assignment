@@ -39,7 +39,7 @@ def get_month_names_for_quarter(year, quarter):
 @op
 def upload_to_goole(file_path):
     logger = get_dagster_logger()
-    key_path = '/opt/dagster/app/princ_assignment/key.json'
+    key_path = '/opt/dagster/app/key.json'
     creds = service_account.Credentials.from_service_account_file(
         filename=key_path)
 
@@ -70,7 +70,7 @@ def get_product_sales_amount_by_quarter(conn, year, quarter):
     """
     df = pd.read_sql(sql, con=conn)
 
-    output_file = f'/opt/dagster/app/princ_assignment/{year}_Q{quarter}_data.xlsx'
+    output_file = f'/opt/dagster/app/data/{year}_Q{quarter}_data.xlsx'
     with pd.ExcelWriter(output_file, engine='openpyxl') as writer:
         for month in range(0, 3):
             df[df['yearMonth'] == year_month[month]].to_excel(
@@ -92,7 +92,7 @@ def scenario2_job():
 
 
 @schedule(
-    cron_schedule="30 0 * * *",
+    cron_schedule="0 0 1 1,4,7,10 *",
     job=scenario2_job,
     execution_timezone="Asia/Bangkok",
     default_status=DefaultScheduleStatus.RUNNING

@@ -50,7 +50,7 @@ def scenario3_job():
 
 
 @schedule(
-    cron_schedule="30 0 * * *",
+    cron_schedule="00 07 * * *",
     job=scenario3_job,
     execution_timezone="Asia/Bangkok",
     default_status=DefaultScheduleStatus.RUNNING
